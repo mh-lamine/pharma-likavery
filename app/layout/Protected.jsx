@@ -1,6 +1,6 @@
 import { Outlet, redirect } from "react-router";
-import { pb } from "../lib/pbconfig";
-import { SITES_URLS } from "../lib/enums";
+import { pb } from "@/lib/pbconfig";
+import { SITES_URLS } from "@/lib/enums";
 
 export async function loader() {
   if (!pb.authStore.isValid) {

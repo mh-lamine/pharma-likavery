@@ -9,10 +9,10 @@ import {
 } from "react-router";
 
 import stylesheet from "./app.css?url";
-import Navbar from "./components/Navbar";
-import { UserProvider } from "./context/UserProvider";
-import { pb } from "./lib/pbconfig";
-import { SITES_URLS } from "../../client/app/lib/enums";
+import Navbar from "@/components/Navbar";
+import { UserProvider } from "@/context/UserProvider";
+import { pb } from "@/lib/pbconfig";
+import { SITES_URLS } from "@/lib/enums";
 import { parse } from "cookie";
 
 export const links = () => [
