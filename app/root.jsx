@@ -48,42 +48,19 @@ export function Layout({ children }) {
 }
 
 export async function loader({ request }) {
-  const { authData } = parse(request.headers.get("Cookie") || "");
-
-  if (!authData) {
-    return null;
+  pb.authStore.loadFromCookie(request.headers.get("Cookie") || "");
+  
+  if (!pb.authStore.isValid) {
+    return redirect(SITES_URLS.login);
   }
-
-  try {
-    const { token, record } = JSON.parse(authData);
-
-    if (!token || !record) {
-      throw new Error("Invalid auth cookie structure");
-    }
-
-    pb.authStore.save(token, record);
-
-    if (!pb.authStore.isValid) {
-      throw new Error("Invalid authentication");
-    }
-
-    const user = await pb.collection("users").getOne(record.id);
-    return user;
-  } catch (error) {
-    pb.authStore.clear();
-    return redirect("/login", {
-      headers: {
-        "Set-Cookie": "authData=; HttpOnly; Path=*; Max-Age=0; SameSite=Lax;",
-      },
-    });
-  }
+  return pb.authStore.record;
 }
 
 export function action() {
   pb.authStore.clear();
   return redirect(SITES_URLS.login, {
     headers: {
-      "Set-Cookie": "authData=; HttpOnly; Path=*; Max-Age=0; SameSite=Lax;",
+      "Set-Cookie": "pb_auth=; HttpOnly; Path='/'; Max-Age=0; SameSite=Lax;",
     },
   });
 }
