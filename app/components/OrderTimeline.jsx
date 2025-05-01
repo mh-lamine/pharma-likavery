@@ -122,7 +122,6 @@ const OrderAction = ({ id, trigger, status }) => {
             <Form
               method="post"
               action={`/order/${id}/update-order?new-status=${statuses[status].next}`}
-              className="w-full"
             >
               <Button type="submit" className="w-full">
                 Continue

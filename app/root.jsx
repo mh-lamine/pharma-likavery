@@ -56,13 +56,17 @@ export async function loader({ request }) {
     return redirect(SITES_URLS.login);
   }
 
-  const initialOrders = await pb.collection("orders").getFullList(200, {
-    filter: "status=''",
+  const initialOrders = await pb.collection("orders").getFullList({
+    filter: `status=''`,
     sort: "-created",
   });
   return {
     user: pb.authStore.record,
-    orders: initialOrders,
+    orders: initialOrders.filter((order) =>
+      order.nearest_pharmacies.some(
+        (pharmacy) => pharmacy.id === pb.authStore.record.id
+      )
+    ),
   };
 }
 
@@ -80,7 +84,11 @@ export default function App({ loaderData }) {
   const [pendingOrders, setPendingOrders] = useState(initialOrders);
 
   usePocketBaseRealtime("orders", ({ action, record }) => {
-    if (action === "create") {
+    const isNear = record.nearest_pharmacies.some(
+      (pharmacy) => pharmacy.id === loaderData.user.id
+    );
+
+    if (action === "create" && isNear) {
       setPendingOrders((prev) => [record, ...prev]);
     }
     if (action === "update") {
