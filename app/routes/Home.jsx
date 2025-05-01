@@ -35,7 +35,7 @@ export default function Home() {
             {incomingOrders.length
               ? incomingOrders
                   .sort((a, b) => new Date(b.created) - new Date(a.created))
-                  .map((order) => <OrderCard key={order.id} order={order} />)
+                  .map((order) => <OrderCard key={order.id} id={order.id} status={order.status} />)
               : "No orders yet"}
           </ul>
         </div>

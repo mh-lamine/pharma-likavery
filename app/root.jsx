@@ -55,7 +55,15 @@ export async function loader({ request }) {
   if (!pb.authStore.isValid) {
     return redirect(SITES_URLS.login);
   }
-  return pb.authStore.record;
+
+  const initialOrders = await pb.collection("orders").getFullList(200, {
+    filter: "status='pending'",
+    sort: "-created",
+  });
+  return {
+    user: pb.authStore.record,
+    orders: initialOrders,
+  };
 }
 
 export function action() {
@@ -68,7 +76,8 @@ export function action() {
 }
 
 export default function App({ loaderData }) {
-  const [pendingOrders, setPendingOrders] = useState([]);
+  const initialOrders = loaderData?.orders || [];
+  const [pendingOrders, setPendingOrders] = useState(initialOrders);
 
   usePocketBaseRealtime("orders", ({ action, record }) => {
     if (action === "create") {
@@ -77,7 +86,7 @@ export default function App({ loaderData }) {
   });
 
   return (
-    <UserProvider initialState={loaderData}>
+    <UserProvider initialState={loaderData.user}>
       <IncomingOrdersProvider
         initialState={pendingOrders}
         setIncomingOrders={setPendingOrders}

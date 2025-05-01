@@ -20,7 +20,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <nav className="flex items-center justify-between px-8 py-4 shadow bg-[#026E62]/75">
+    <nav className="flex items-center justify-between px-8 py-4 shadow bg-[#026E62]">
       <Link to="/">
         <h1 className="font-semibold text-xl uppercase tracking-wider text-white">
           Likavery
