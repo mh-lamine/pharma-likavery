@@ -3,9 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Form, Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { pb } from "@/lib/pbconfig";
 import useUser from "@/hooks/useUser";
-import { redirect } from "react-router";
 
 export default function Account() {
   const { user } = useUser();

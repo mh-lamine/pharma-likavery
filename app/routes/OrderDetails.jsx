@@ -1,6 +1,3 @@
-import { redirect } from "react-router";
-import { pb } from "@/lib/pbconfig";
-
 export default function OrderDetails({ params }) {
   const { id } = params;
   return (

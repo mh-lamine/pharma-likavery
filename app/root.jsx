@@ -13,7 +13,9 @@ import Navbar from "@/components/Navbar";
 import { UserProvider } from "@/context/UserProvider";
 import { pb } from "@/lib/pbconfig";
 import { SITES_URLS } from "@/lib/enums";
-import { parse } from "cookie";
+import { useState } from "react";
+import { IncomingOrdersProvider } from "./context/IncomingOrdersProvider";
+import { usePocketBaseRealtime } from "./hooks/usePocketBaseRealtime";
 
 export const links = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -49,7 +51,7 @@ export function Layout({ children }) {
 
 export async function loader({ request }) {
   pb.authStore.loadFromCookie(request.headers.get("Cookie") || "");
-  
+
   if (!pb.authStore.isValid) {
     return redirect(SITES_URLS.login);
   }
@@ -66,15 +68,28 @@ export function action() {
 }
 
 export default function App({ loaderData }) {
+  const [pendingOrders, setPendingOrders] = useState([]);
+
+  usePocketBaseRealtime("orders", ({ action, record }) => {
+    if (action === "create") {
+      setPendingOrders((prev) => [record, ...prev]);
+    }
+  });
+
   return (
     <UserProvider initialState={loaderData}>
-      <div className="flex flex-col justify-between min-h-screen">
-        <header>
-          <Navbar />
-        </header>
-        <Outlet />
-        <footer>footer</footer>
-      </div>
+      <IncomingOrdersProvider
+        initialState={pendingOrders}
+        setIncomingOrders={setPendingOrders}
+      >
+        <div className="flex flex-col justify-between min-h-screen">
+          <header>
+            <Navbar />
+          </header>
+          <Outlet />
+          <footer>footer</footer>
+        </div>
+      </IncomingOrdersProvider>
     </UserProvider>
   );
 }
