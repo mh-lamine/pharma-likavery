@@ -10,7 +10,7 @@ export default function Account() {
   const { name, email, address } = user;
 
   return (
-    <main className="flex flex-col flex-1 px-8 py-4 space-y-4">
+    <main className="w-full max-w-screen-lg mx-auto p-8 space-y-4">
       <h2 className="text-2xl font-medium">Mon compte</h2>
       <Form method="post" className="flex flex-col items-center gap-4">
         <InfoField name="name" type="text" defaultValue={name} />

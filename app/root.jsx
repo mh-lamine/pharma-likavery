@@ -82,12 +82,12 @@ export default function App({ loaderData }) {
         initialState={pendingOrders}
         setIncomingOrders={setPendingOrders}
       >
-        <div className="flex flex-col justify-between min-h-screen">
+        <div className="flex flex-col min-h-screen">
           <header>
             <Navbar />
           </header>
           <Outlet />
-          <footer>footer</footer>
+          <footer className="mt-auto">footer</footer>
         </div>
       </IncomingOrdersProvider>
     </UserProvider>

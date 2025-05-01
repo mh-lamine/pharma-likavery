@@ -1,7 +1,7 @@
 export default function OrderDetails({ params }) {
   const { id } = params;
   return (
-    <main className="flex-1 px-8 py-4">
+    <main className="w-full max-w-screen-lg mx-auto p-8">
       <h2 className="text-2xl font-medium">Commande #{id}</h2>
       <div>
         {/* <p>Adresse de livraison : {delivery_address}</p>
