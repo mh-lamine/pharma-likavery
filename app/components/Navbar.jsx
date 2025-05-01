@@ -24,6 +24,9 @@ export default function Navbar() {
       <Link to="/">
         <h1 className="font-semibold text-xl uppercase tracking-wider text-white">
           Likavery
+          <span className="bg-white text-[#026E62] font-semibold me-2 px-2.5 py-0.5 rounded-sm ms-2">
+            PRO
+          </span>
         </h1>
       </Link>
       <Drawer direction="right">

@@ -18,13 +18,21 @@ export default function OrderCard({ id, status }) {
             user@email.com
           </p>
         </div>
-        {!status ? (
+        {!status && (
           <Form method="post" action={`order/${id}/accept-order`}>
             <Button type="submit" variant="default" className="bg-[#026E62]">
               Accepter
             </Button>
           </Form>
-        ) : (
+        )}
+        {status === "retrieved" && (
+          <Form method="post" action={`order/${id}/close-order`}>
+            <Button type="submit" variant="default">
+              Cloturer
+            </Button>
+          </Form>
+        )}
+        {status && status !== "closed" && (
           <Button asChild>
             <Link to={`/order/${id}`}>
               <ExternalLink />
@@ -32,7 +40,7 @@ export default function OrderCard({ id, status }) {
           </Button>
         )}
       </div>
-      {status && <OrderTimeline status={status} />}
+      {(status && status !== "closed") && <OrderTimeline status={status} />}
     </li>
   );
 }

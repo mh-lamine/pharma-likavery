@@ -1,9 +1,8 @@
 import { FilePlus2, Package, UserRoundCheck } from "lucide-react";
 
 export default function OrderTimeline({ status }) {
-  console.log("status", status);
   return (
-    <ol className="flex items-center justify-between">
+    <ol className="flex items-center justify-between gap-2 sm:gap-3">
       <li
         className={`p-3 ${
           status ? "bg-[#026E6250]" : "bg-gray-200"

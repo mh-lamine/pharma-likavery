@@ -14,7 +14,7 @@ export function meta() {
 
 export async function loader() {
   return await pb.collection("orders").getList(1, 20, {
-    filter: `pharma="${pb.authStore.record.id}"`,
+    filter: `pharma="${pb.authStore.record.id}"(status != "retrieved" && status != "closed")`,
     requestKey: null,
   });
 }
@@ -23,8 +23,9 @@ export default function Home({ loaderData: orders }) {
   const { incomingOrders } = UseIncomingOrders();
   return (
     <main className="w-full max-w-screen-lg mx-auto p-8 space-y-4">
-      <h2 className="text-2xl font-medium">Tableau de bord</h2>
-
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-medium">Tableau de bord</h2>
+      </div>
       <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8">
         <div className="flex items-center justify-between mb-4">
           <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
@@ -52,7 +53,7 @@ export default function Home({ loaderData: orders }) {
                       status={order.status}
                     />
                   ))
-              : "No orders yet"}
+              : "Pas de commandes en cours"}
           </ul>
         </div>
       </div>
@@ -83,7 +84,7 @@ export default function Home({ loaderData: orders }) {
                       status={order.status}
                     />
                   ))
-              : "No orders yet"}
+              : "Pas de nouvelles commandes"}
           </ul>
         </div>
       </div>
