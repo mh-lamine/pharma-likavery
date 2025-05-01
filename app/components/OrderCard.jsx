@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
 import { ExternalLink } from "lucide-react";
 import OrderTimeline from "./OrderTimeline";
-import { Link } from "react-router";
+import { Form, Link } from "react-router";
 
 export default function OrderCard({ id, status }) {
   return (
@@ -18,13 +18,21 @@ export default function OrderCard({ id, status }) {
             user@email.com
           </p>
         </div>
-        <Button asChild>
-          <Link to={`/order/${id}`}>
-            <ExternalLink />
-          </Link>
-        </Button>
+        {!status ? (
+          <Form method="post" action={`order/${id}/accept-order`}>
+            <Button type="submit" variant="default" className="bg-[#026E62]">
+              Accepter
+            </Button>
+          </Form>
+        ) : (
+          <Button asChild>
+            <Link to={`/order/${id}`}>
+              <ExternalLink />
+            </Link>
+          </Button>
+        )}
       </div>
-      <OrderTimeline status={status} />
+      {status && <OrderTimeline status={status} />}
     </li>
   );
 }

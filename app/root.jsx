@@ -57,7 +57,7 @@ export async function loader({ request }) {
   }
 
   const initialOrders = await pb.collection("orders").getFullList(200, {
-    filter: "status='pending'",
+    filter: "status=''",
     sort: "-created",
   });
   return {
@@ -82,6 +82,11 @@ export default function App({ loaderData }) {
   usePocketBaseRealtime("orders", ({ action, record }) => {
     if (action === "create") {
       setPendingOrders((prev) => [record, ...prev]);
+    }
+    if (action === "update") {
+      setPendingOrders((prev) =>
+        prev.filter((order) => order.id !== record.id)
+      );
     }
   });
 
