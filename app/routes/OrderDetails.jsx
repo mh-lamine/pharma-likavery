@@ -1,13 +1,27 @@
-export default function OrderDetails({ params }) {
-  const { id } = params;
+import { pb } from "@/lib/pbconfig";
+
+export async function loader({ params }) {
+  const order = await pb.collection("orders").getOne(params.id);
+
+  return {
+    ...order,
+    prescription: pb.files.getURL(order, order.prescription, {
+      thumb: "200x200",
+      cache: false,
+    }),
+  };
+}
+
+export default function OrderDetails({ loaderData: order }) {
+  const { id, prescription } = order;
   return (
     <main className="w-full max-w-screen-lg mx-auto p-8">
-      <h2 className="text-2xl font-medium">Commande #{id}</h2>
-      <div>
-        {/* <p>Adresse de livraison : {delivery_address}</p>
-        <p>Status : {progress}</p> */}
-      </div>
-      {/* <Button></Button> */}
+      <h2 className="text-2xl font-medium mb-4">Commande #{id}</h2>
+
+      <img
+        src={prescription}
+        className="p-1 rounded overflow-hidden border-4 border-[#026E6250] w-full h-auto"
+      />
     </main>
   );
 }
