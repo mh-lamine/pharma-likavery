@@ -7,7 +7,6 @@ export async function loader({ params }) {
     ...order,
     prescription: pb.files.getURL(order, order.prescription, {
       thumb: "200x200",
-      cache: false,
     }),
   };
 }
@@ -17,10 +16,9 @@ export default function OrderDetails({ loaderData: order }) {
   return (
     <main className="w-full max-w-screen-lg mx-auto p-8">
       <h2 className="text-2xl font-medium mb-4">Commande #{id}</h2>
-
       <img
         src={prescription}
-        className="p-1 rounded overflow-hidden border-4 border-[#026E6250] w-full h-auto"
+        className="p-1 rounded overflow-hidden border-4 border-[#026E6250] max-h-screen"
       />
     </main>
   );

@@ -20,51 +20,53 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <nav className="flex items-center justify-between px-8 py-4 shadow bg-[#026E62]">
-      <Link to="/">
-        <h1 className="font-semibold text-xl uppercase tracking-wider text-white">
-          Likavery
-          <span className="bg-white text-[#026E62] font-semibold me-2 px-2.5 py-0.5 rounded-sm ms-2">
-            PRO
-          </span>
-        </h1>
-      </Link>
-      <Drawer direction="right">
-        <DrawerTrigger>
-          <Avatar className="h-12 w-12 border-2 border-white">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>
-              <CircleUserRound />
-            </AvatarFallback>
-          </Avatar>
-        </DrawerTrigger>
-        <DrawerContent className="w-full flex flex-col items-center text-right p-4">
-          <DrawerHeader>
-            <DrawerClose>
-              <DrawerTitle
-                onClick={() => navigate("/")}
-                className="font-semibold text-xl uppercase tracking-wider text-right"
-              >
-                Likavery
-              </DrawerTitle>
-            </DrawerClose>
-            <DrawerDescription>
-              Faites-vous livrer vos soins où que vous soyez !
-            </DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter className="w-full p-0">
-            <DrawerClose>
-              {user ? (
-                <UserAction user={user} setUser={setUser} />
-              ) : (
-                <Button onClick={() => navigate("/login")} className="w-full">
-                  Login
-                </Button>
-              )}
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+    <nav className="shadow bg-[#026E62]">
+      <div className="flex items-center justify-between px-8 py-4 max-w-screen-lg mx-auto">
+        <Link to="/">
+          <h1 className="font-semibold text-xl uppercase tracking-wider text-white">
+            Likavery
+            <span className="bg-white text-[#026E62] font-semibold me-2 px-2.5 py-0.5 rounded-sm ms-2">
+              PRO
+            </span>
+          </h1>
+        </Link>
+        <Drawer direction="right">
+          <DrawerTrigger>
+            <Avatar className="h-12 w-12 border-2 border-white">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>
+                <CircleUserRound />
+              </AvatarFallback>
+            </Avatar>
+          </DrawerTrigger>
+          <DrawerContent className="w-full flex flex-col items-center text-right p-4">
+            <DrawerHeader>
+              <DrawerClose>
+                <DrawerTitle
+                  onClick={() => navigate("/")}
+                  className="font-semibold text-xl uppercase tracking-wider text-right"
+                >
+                  Likavery
+                </DrawerTitle>
+              </DrawerClose>
+              <DrawerDescription>
+                Faites-vous livrer vos soins où que vous soyez !
+              </DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter className="w-full p-0">
+              <DrawerClose>
+                {user ? (
+                  <UserAction user={user} setUser={setUser} />
+                ) : (
+                  <Button onClick={() => navigate("/login")} className="w-full">
+                    Login
+                  </Button>
+                )}
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </div>
     </nav>
   );
 }
