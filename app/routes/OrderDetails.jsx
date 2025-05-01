@@ -20,7 +20,7 @@ export default function OrderDetails({ loaderData: order }) {
       <h2 className="text-2xl font-medium">Commande #{id}</h2>
       <div className="sm:w-2/3 lg:w-1/2 space-y-4">
         <Alert />
-        <OrderTimeline status={status} showLabels={true} />
+        <OrderTimeline id={id} status={status} showLabels={true} />
       </div>
       <img
         src={prescription}
@@ -32,11 +32,11 @@ export default function OrderDetails({ loaderData: order }) {
 
 const Alert = () => (
   <div
-    class="flex items-center gap-4 p-4 text-sm text-[#026E62] rounded-lg bg-[#026E6240] w-fit"
+    className="flex items-center gap-4 p-4 text-sm text-[#026E62] rounded-lg bg-[#026E6240] w-fit"
     role="alert"
   >
     <Info />
-    <span class="sr-only">Info</span>
+    <span className="sr-only">Info</span>
     <div>Sélectionnez l'état de la commande pour mettre à jour son statut.</div>
   </div>
 );

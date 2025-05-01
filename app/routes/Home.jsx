@@ -14,7 +14,7 @@ export function meta() {
 
 export async function loader() {
   return await pb.collection("orders").getList(1, 20, {
-    filter: `pharma="${pb.authStore.record.id}"(status != "retrieved" && status != "closed")`,
+    filter: `pharma="${pb.authStore.record.id}"&&status != "closed"`,
     requestKey: null,
   });
 }
