@@ -1,5 +1,6 @@
 import OrderCard from "@/components/OrderCard";
-import { UseIncomingOrders } from "@/context/IncomingOrdersProvider";
+import OrdersPanel from "@/components/OrdersPanel";
+import { useIncomingOrders } from "@/context/IncomingOrdersProvider";
 import { pb } from "@/lib/pbconfig";
 
 export function meta() {
@@ -20,24 +21,14 @@ export async function loader() {
 }
 
 export default function Home({ loaderData: orders }) {
-  const { incomingOrders } = UseIncomingOrders();
+  const { incomingOrders } = useIncomingOrders();
+
   return (
     <main className="w-full max-w-screen-lg mx-auto p-8 space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-medium">Tableau de bord</h2>
       </div>
-      <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8">
-        <div className="flex items-center justify-between mb-4">
-          <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-            Commandes en cours
-          </h5>
-          <a
-            href="#"
-            className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
-          >
-            View all
-          </a>
-        </div>
+      <OrdersPanel title="Commandes en cours">
         <div className="flow-root">
           <ul
             role="list"
@@ -56,38 +47,21 @@ export default function Home({ loaderData: orders }) {
               : "Pas de commandes en cours"}
           </ul>
         </div>
-      </div>
-      <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-8">
-        <div className="flex items-center justify-between mb-4">
-          <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-            Nouvelles commandes
-          </h5>
-          <a
-            href="#"
-            className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
-          >
-            View all
-          </a>
-        </div>
+      </OrdersPanel>
+      <OrdersPanel title="Nouvelles commandes">
         <div className="flow-root">
           <ul
             role="list"
             className="divide-y md:divide-y-0 md:grid grid-cols-2 gap-x-12"
           >
-            {incomingOrders.length
+            {incomingOrders?.length
               ? incomingOrders
                   .sort((a, b) => new Date(b.created) - new Date(a.created))
-                  .map((order) => (
-                    <OrderCard
-                      key={order.id}
-                      id={order.id}
-                      status={order.status}
-                    />
-                  ))
-              : "Pas de nouvelles commandes"}
+                  .map((order) => <OrderCard key={order.id} id={order.id} />)
+              : "Pas de commandes à accepter"}
           </ul>
         </div>
-      </div>
+      </OrdersPanel>
     </main>
   );
 }

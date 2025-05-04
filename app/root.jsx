@@ -57,6 +57,7 @@ export async function loader({ request }) {
   }
 
   const initialOrders = await pb.collection("orders").getFullList({
+    //TODO: filter nested value to only get orders where order.nearest_pharmacies contains current pharmacy
     filter: `status=''`,
     sort: "-created",
   });
@@ -81,7 +82,7 @@ export function action() {
 
 export default function App({ loaderData }) {
   const initialOrders = loaderData?.orders || [];
-  const [pendingOrders, setPendingOrders] = useState(initialOrders);
+  const [incomingOrders, setIncomingOrders] = useState(initialOrders);
 
   usePocketBaseRealtime("orders", ({ action, record }) => {
     const isNear = record.nearest_pharmacies.some(
@@ -89,10 +90,10 @@ export default function App({ loaderData }) {
     );
 
     if (action === "create" && isNear) {
-      setPendingOrders((prev) => [record, ...prev]);
+      setIncomingOrders((prev) => [record, ...prev]);
     }
     if (action === "update") {
-      setPendingOrders((prev) =>
+      setIncomingOrders((prev) =>
         prev.filter((order) => order.id !== record.id)
       );
     }
@@ -101,8 +102,8 @@ export default function App({ loaderData }) {
   return (
     <UserProvider initialState={loaderData.user}>
       <IncomingOrdersProvider
-        initialState={pendingOrders}
-        setIncomingOrders={setPendingOrders}
+        initialState={incomingOrders}
+        setIncomingOrders={setIncomingOrders}
       >
         <div className="flex flex-col min-h-screen">
           <header>

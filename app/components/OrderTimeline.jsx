@@ -13,7 +13,7 @@ import { FilePlus2, Package, UserRoundCheck } from "lucide-react";
 import { Button } from "./ui/button";
 import { Form } from "react-router";
 
-export default function OrderTimeline({ id, status, showLabels }) {
+export default function OrderTimeline({ id, status }) {
   return (
     <ol className="flex items-center justify-between gap-2 sm:gap-3">
       <li
@@ -55,12 +55,12 @@ export default function OrderTimeline({ id, status, showLabels }) {
       </li>
       <div
         className={`flex w-full ${
-          status === "retrieved" ? "bg-[#026E6240]" : "bg-gray-200"
+          status === "collected" ? "bg-[#026E6240]" : "bg-gray-200"
         }  h-0.5`}
       />
       <li
         className={`p-3 ${
-          status === "retrieved" ? "bg-[#026E6240]" : "bg-gray-200"
+          status === "collected" ? "bg-[#026E6240]" : "bg-gray-200"
         } rounded-full`}
       >
         {status === "packed" ? (
@@ -68,7 +68,7 @@ export default function OrderTimeline({ id, status, showLabels }) {
             trigger={
               <UserRoundCheck
                 size={22}
-                className={`${status === "retrieved" && "text-[#026E62]"}`}
+                className={`${status === "collected" && "text-[#026E62]"}`}
               />
             }
             status={status}
@@ -77,7 +77,7 @@ export default function OrderTimeline({ id, status, showLabels }) {
         ) : (
           <UserRoundCheck
             size={22}
-            className={`${status === "retrieved" && "text-[#026E62]"}`}
+            className={`${status === "collected" && "text-[#026E62]"}`}
           />
         )}
       </li>
@@ -93,7 +93,7 @@ const OrderAction = ({ id, trigger, status }) => {
     },
     packed: {
       current: "packed",
-      next: "retrieved",
+      next: "collected",
     },
   };
   return (

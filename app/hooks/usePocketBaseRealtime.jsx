@@ -9,5 +9,5 @@ export function usePocketBaseRealtime(collection, callback) {
     return () => {
       pb.collection(collection).unsubscribe("*");
     };
-  }, [collection, callback]);
+  }, []);
 }

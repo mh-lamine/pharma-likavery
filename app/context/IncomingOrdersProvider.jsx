@@ -16,4 +16,4 @@ export function IncomingOrdersProvider({
   );
 }
 
-export const UseIncomingOrders = () => useContext(IncomingOrdersContext);
+export const useIncomingOrders = () => useContext(IncomingOrdersContext);

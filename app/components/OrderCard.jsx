@@ -15,7 +15,7 @@ export default function OrderCard({ id, status }) {
           <p className="text-sm text-gray-500 truncate">user@email.com</p>
         </div>
         {!status ? (
-          <Form method="post" action={`order/${id}/accept-order`}>
+          <Form method="post" action={`/order/${id}/update-order?new-status=accepted`}>
             <Button type="submit" variant="default" className="bg-[#026E62]">
               Accepter
             </Button>
