@@ -14,7 +14,7 @@ import { UserProvider } from "@/context/UserProvider";
 import { pb } from "@/lib/pbconfig";
 import { SITES_URLS } from "@/lib/enums";
 import { useState } from "react";
-import { IncomingOrdersProvider } from "./context/IncomingOrdersProvider";
+import { OrdersProvider } from "./context/OrdersProvider";
 import { usePocketBaseRealtime } from "./hooks/usePocketBaseRealtime";
 
 export const links = () => [
@@ -58,15 +58,13 @@ export async function loader({ request }) {
 
   const initialOrders = await pb.collection("orders").getFullList({
     //TODO: filter nested value to only get orders where order.nearest_pharmacies contains current pharmacy
-    filter: `status=''`,
+    filter: `status!='closed'`,
     sort: "-created",
   });
   return {
     user: pb.authStore.record,
-    orders: initialOrders.filter((order) =>
-      order.nearest_pharmacies.some(
-        (pharmacy) => pharmacy.id === pb.authStore.record.id
-      )
+    orders: initialOrders.filter(({ nearest_pharmacies }) =>
+      nearest_pharmacies.some(({ id }) => id === pb.authStore.record.id)
     ),
   };
 }
@@ -82,7 +80,7 @@ export function action() {
 
 export default function App({ loaderData }) {
   const initialOrders = loaderData?.orders || [];
-  const [incomingOrders, setIncomingOrders] = useState(initialOrders);
+  const [orders, setOrders] = useState(initialOrders);
 
   usePocketBaseRealtime("orders", ({ action, record }) => {
     const isNear = record.nearest_pharmacies.some(
@@ -90,21 +88,27 @@ export default function App({ loaderData }) {
     );
 
     if (action === "create" && isNear) {
-      setIncomingOrders((prev) => [record, ...prev]);
+      setOrders((prev) => [record, ...prev]);
     }
     if (action === "update") {
-      setIncomingOrders((prev) =>
-        prev.filter((order) => order.id !== record.id)
+      if (record.status === "closed") {
+        setOrders((prev) => prev.filter((order) => order.id !== record.id));
+        return;
+      }
+      setOrders((prev) =>
+        prev.map((order) => {
+          if (order.id === record.id) {
+            return { ...order, ...record };
+          }
+          return order;
+        })
       );
     }
   });
 
   return (
     <UserProvider initialState={loaderData.user}>
-      <IncomingOrdersProvider
-        initialState={incomingOrders}
-        setIncomingOrders={setIncomingOrders}
-      >
+      <OrdersProvider initialState={orders} setOrders={setOrders}>
         <div className="flex flex-col min-h-screen">
           <header>
             <Navbar />
@@ -112,7 +116,7 @@ export default function App({ loaderData }) {
           <Outlet />
           <footer className="mt-auto">footer</footer>
         </div>
-      </IncomingOrdersProvider>
+      </OrdersProvider>
     </UserProvider>
   );
 }

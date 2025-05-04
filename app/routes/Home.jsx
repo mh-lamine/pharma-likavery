@@ -1,7 +1,6 @@
 import OrderCard from "@/components/OrderCard";
 import OrdersPanel from "@/components/OrdersPanel";
-import { useIncomingOrders } from "@/context/IncomingOrdersProvider";
-import { pb } from "@/lib/pbconfig";
+import { useOrders } from "@/context/OrdersProvider";
 
 export function meta() {
   return [
@@ -13,15 +12,12 @@ export function meta() {
   ];
 }
 
-export async function loader() {
-  return await pb.collection("orders").getList(1, 20, {
-    filter: `pharma="${pb.authStore.record.id}"&&status != "closed"`,
-    requestKey: null,
-  });
-}
-
-export default function Home({ loaderData: orders }) {
-  const { incomingOrders } = useIncomingOrders();
+export default function Home() {
+  const { orders } = useOrders();
+  const pendingOrders = orders?.filter(({ status }) =>
+    ["accepted", "packed", "collected"].includes(status)
+  );
+  const newOrders = orders?.filter(({ status }) => status === "");
 
   return (
     <main className="w-full max-w-screen-lg mx-auto p-8 space-y-4">
@@ -34,8 +30,8 @@ export default function Home({ loaderData: orders }) {
             role="list"
             className="divide-y md:divide-y-0 md:grid grid-cols-2 gap-x-12"
           >
-            {orders.items?.length
-              ? orders.items
+            {pendingOrders?.length
+              ? pendingOrders
                   .sort((a, b) => new Date(b.created) - new Date(a.created))
                   .map((order) => (
                     <OrderCard
@@ -54,8 +50,8 @@ export default function Home({ loaderData: orders }) {
             role="list"
             className="divide-y md:divide-y-0 md:grid grid-cols-2 gap-x-12"
           >
-            {incomingOrders?.length
-              ? incomingOrders
+            {newOrders?.length
+              ? newOrders
                   .sort((a, b) => new Date(b.created) - new Date(a.created))
                   .map((order) => <OrderCard key={order.id} id={order.id} />)
               : "Pas de commandes à accepter"}
