@@ -44,7 +44,7 @@ export default function Navbar() {
               <DrawerClose>
                 <DrawerTitle
                   onClick={() => navigate("/")}
-                  className="font-semibold text-xl uppercase tracking-wider text-right"
+                  className="font-semibold text-xl uppercase tracking-wider text-right text-[#026E62]"
                 >
                   Likavery
                 </DrawerTitle>
@@ -58,8 +58,8 @@ export default function Navbar() {
                 {user ? (
                   <UserAction user={user} setUser={setUser} />
                 ) : (
-                  <Button onClick={() => navigate("/login")} className="w-full">
-                    Login
+                  <Button asChild className="w-full">
+                    <Link to={SITES_URLS.login}>Se connecter</Link>
                   </Button>
                 )}
               </DrawerClose>

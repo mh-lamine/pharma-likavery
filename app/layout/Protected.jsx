@@ -6,6 +6,9 @@ export async function loader() {
   if (!pb.authStore.isValid) {
     throw redirect(SITES_URLS.login);
   }
+  if (pb.authStore.record.role !== "pharma") {
+    throw redirect(SITES_URLS[pb.authStore.record.role]);
+  }
 }
 
 export default function ProtectedLayout() {
