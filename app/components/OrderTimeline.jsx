@@ -55,12 +55,16 @@ export default function OrderTimeline({ id, status }) {
       </li>
       <div
         className={`flex w-full ${
-          status === "collected" ? "bg-[#026E6240]" : "bg-gray-200"
+          ["collected", "closed"].includes(status)
+            ? "bg-[#026E6240]"
+            : "bg-gray-200"
         }  h-0.5`}
       />
       <li
         className={`p-3 ${
-          status === "collected" ? "bg-[#026E6240]" : "bg-gray-200"
+          ["collected", "closed"].includes(status)
+            ? "bg-[#026E6240]"
+            : "bg-gray-200"
         } rounded-full`}
       >
         {status === "packed" ? (
@@ -68,7 +72,9 @@ export default function OrderTimeline({ id, status }) {
             trigger={
               <UserRoundCheck
                 size={22}
-                className={`${status === "collected" && "text-[#026E62]"}`}
+                className={`${
+                  ["collected", "closed"].includes(status) && "text-[#026E62]"
+                }`}
               />
             }
             status={status}
@@ -77,7 +83,9 @@ export default function OrderTimeline({ id, status }) {
         ) : (
           <UserRoundCheck
             size={22}
-            className={`${status === "collected" && "text-[#026E62]"}`}
+            className={`${
+              ["collected", "closed"].includes(status) && "text-[#026E62]"
+            }`}
           />
         )}
       </li>
