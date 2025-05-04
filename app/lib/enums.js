@@ -3,4 +3,5 @@ export const SITES_URLS = {
   register: "http://localhost:5173/register",
   patient: "http://localhost:5174",
   pharma: "http://localhost:5175",
+  landing: "https://liilvame.github.io/",
 };

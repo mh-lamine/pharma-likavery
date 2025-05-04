@@ -16,6 +16,7 @@ import { SITES_URLS } from "@/lib/enums";
 import { useState } from "react";
 import { OrdersProvider } from "./context/OrdersProvider";
 import { usePocketBaseRealtime } from "./hooks/usePocketBaseRealtime";
+import Footer from "./components/Footer";
 
 export const links = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -114,7 +115,7 @@ export default function App({ loaderData }) {
             <Navbar />
           </header>
           <Outlet />
-          <footer className="mt-auto">footer</footer>
+          <Footer />
         </div>
       </OrdersProvider>
     </UserProvider>
