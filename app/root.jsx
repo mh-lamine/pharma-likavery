@@ -87,23 +87,28 @@ export default function App({ loaderData }) {
     const isNear = record.nearest_pharmacies.some(
       (pharmacy) => pharmacy.id === loaderData.user.id
     );
+    const isPharma = record.pharma === loaderData.user.id;
 
-    if (action === "create" && isNear) {
-      setOrders((prev) => [record, ...prev]);
-    }
-    if (action === "update") {
-      if (record.status === "closed") {
+    switch (action) {
+      case "create":
+        if (isNear) {
+          setOrders((prev) => [record, ...prev]);
+        }
+        break;
+      case "update":
+        if (record.status === "closed" || !isPharma) {
+          setOrders((prev) => prev.filter((order) => order.id !== record.id));
+        } else {
+          setOrders((prev) =>
+            prev.map((order) =>
+              order.id === record.id ? { ...order, ...record } : order
+            )
+          );
+        }
+        break;
+      case "delete":
         setOrders((prev) => prev.filter((order) => order.id !== record.id));
-        return;
-      }
-      setOrders((prev) =>
-        prev.map((order) => {
-          if (order.id === record.id) {
-            return { ...order, ...record };
-          }
-          return order;
-        })
-      );
+        break;
     }
   });
 
