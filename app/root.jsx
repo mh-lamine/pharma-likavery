@@ -111,7 +111,7 @@ export default function App({ loaderData }) {
     <UserProvider initialState={loaderData.user}>
       <OrdersProvider initialState={orders} setOrders={setOrders}>
         <div className="flex flex-col min-h-screen">
-          <header>
+          <header className="sticky top-0">
             <Navbar />
           </header>
           <Outlet />
